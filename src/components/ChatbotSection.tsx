@@ -1,8 +1,42 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Mic, MicOff, Bot, User, Sparkles, Volume2 } from "lucide-react";
+import { Send, Mic, MicOff, Bot, User, Sparkles, Volume2, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+// Web Speech API type declarations
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onstart: (() => void) | null;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognitionInstance;
+    webkitSpeechRecognition: new () => SpeechRecognitionInstance;
+  }
+}
 
 const translations = {
   en: {
@@ -57,9 +91,16 @@ interface ChatbotSectionProps {
   language: string;
 }
 
+const outputLanguages = [
+  { code: "en", label: "English", flag: "🇬🇧" },
+  { code: "hi", label: "हिंदी", flag: "🇮🇳" },
+  { code: "mr", label: "मराठी", flag: "🇮🇳" },
+];
+
 const ChatbotSection = ({ language }: ChatbotSectionProps) => {
   const t = translations[language as keyof typeof translations] || translations.en;
   const { toast } = useToast();
+  const [outputLanguage, setOutputLanguage] = useState("en");
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -72,6 +113,9 @@ const ChatbotSection = ({ language }: ChatbotSectionProps) => {
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
+  const selectedOutputLang = outputLanguages.find(l => l.code === outputLanguage) || outputLanguages[0];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -116,25 +160,68 @@ const ChatbotSection = ({ language }: ChatbotSectionProps) => {
   };
 
   const toggleListening = () => {
-    if (!isListening) {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       toast({
-        title: "Voice Input",
-        description: "Voice recognition started. Speak now...",
+        title: "Not Supported",
+        description: "Voice recognition is not supported in this browser. Please use Chrome or Edge.",
+        variant: "destructive",
       });
+      return;
     }
-    setIsListening(!isListening);
+
+    if (isListening) {
+      // Stop listening
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    // Start listening
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+
+    // Map language codes for speech recognition
+    const langMap: Record<string, string> = {
+      en: "en-IN",
+      hi: "hi-IN",
+      mr: "mr-IN",
+    };
     
-    if (!isListening) {
-      // Simulate voice input
-      setTimeout(() => {
-        setInput("What schemes are available for small business owners?");
-        setIsListening(false);
-        toast({
-          title: "Voice Captured",
-          description: "Your question has been transcribed.",
-        });
-      }, 2000);
-    }
+    recognition.lang = langMap[outputLanguage] || "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = true;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+      toast({
+        title: "Listening...",
+        description: `Speak now in ${selectedOutputLang.label}`,
+      });
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0].transcript)
+        .join("");
+      setInput(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+      toast({
+        title: "Error",
+        description: "Could not recognize speech. Please try again.",
+        variant: "destructive",
+      });
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
   };
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -239,12 +326,38 @@ const ChatbotSection = ({ language }: ChatbotSectionProps) => {
 
             {/* Input */}
             <div className="p-4 border-t border-border bg-background">
+              {/* Output Language Selector */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-muted-foreground">Response Language:</span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="h-8 gap-2">
+                      <Globe className="w-4 h-4" />
+                      <span>{selectedOutputLang.flag} {selectedOutputLang.label}</span>
+                      <ChevronDown className="w-3 h-3" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {outputLanguages.map((lang) => (
+                      <DropdownMenuItem
+                        key={lang.code}
+                        onClick={() => setOutputLanguage(lang.code)}
+                        className={outputLanguage === lang.code ? "bg-primary/10" : ""}
+                      >
+                        <span className="mr-2">{lang.flag}</span>
+                        {lang.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
               <div className="flex gap-2">
                 <Button
                   variant={isListening ? "destructive" : "secondary"}
                   size="icon"
                   onClick={toggleListening}
-                  className="flex-shrink-0"
+                  className={`flex-shrink-0 ${isListening ? "animate-pulse" : ""}`}
                 >
                   {isListening ? (
                     <MicOff className="w-5 h-5" />
@@ -264,7 +377,7 @@ const ChatbotSection = ({ language }: ChatbotSectionProps) => {
                 </Button>
               </div>
               <p className="text-xs text-muted-foreground mt-2 text-center">
-                {t.voiceHint}
+                {isListening ? `🎤 Listening in ${selectedOutputLang.label}...` : t.voiceHint}
               </p>
             </div>
           </div>
