@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Menu, X, Globe, MessageSquare, FileText, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,9 +26,9 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
   const currentLang = languages.find((l) => l.code === currentLanguage) || languages[0];
 
   const navLinks = [
-    { href: "#chatbot", label: "Chatbot", icon: MessageSquare },
-    { href: "#complaints", label: "Complaints", icon: FileText },
-    { href: "#blog", label: "Blog", icon: BookOpen },
+    { href: "#chatbot", label: "Chatbot", icon: MessageSquare, isPage: false },
+    { href: "#complaints", label: "Complaints", icon: FileText, isPage: false },
+    { href: "#blog", label: "Blog", icon: BookOpen, isPage: false },
   ];
 
   const scrollToSection = (href: string) => {
@@ -54,6 +55,13 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
+            <Link
+              to="/chat"
+              className="flex items-center gap-2 px-4 py-2 text-primary font-medium hover:bg-primary/10 rounded-lg transition-colors"
+            >
+              <MessageSquare className="w-4 h-4" />
+              AI Chat
+            </Link>
             {navLinks.map((link) => (
               <button
                 key={link.href}
@@ -107,6 +115,14 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border animate-fade-in">
             <div className="flex flex-col gap-1">
+              <Link
+                to="/chat"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 text-primary font-medium hover:bg-primary/10 rounded-lg transition-colors"
+              >
+                <MessageSquare className="w-5 h-5" />
+                AI Chat
+              </Link>
               {navLinks.map((link) => (
                 <button
                   key={link.href}
