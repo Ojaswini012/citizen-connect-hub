@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Helmet } from "react-helmet";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import NewsHeadlines from "@/components/NewsHeadlines";
 import ChatbotSection from "@/components/ChatbotSection";
 import ComplaintSection from "@/components/ComplaintSection";
 import BlogSection from "@/components/BlogSection";
+import OfficialBranding from "@/components/OfficialBranding";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -30,9 +32,11 @@ const Index = () => {
         
         <main>
           <HeroSection language={language} />
+          <NewsHeadlines language={language} />
           <ChatbotSection language={language} />
           <ComplaintSection language={language} />
           <BlogSection language={language} />
+          <OfficialBranding />
         </main>
 
         <Footer />
