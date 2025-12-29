@@ -29,6 +29,7 @@ const Index = () => {
 
       <div className="min-h-screen bg-background">
         <Navbar currentLanguage={language} onLanguageChange={setLanguage} />
+        <OfficialBranding />
         
         <main>
           <HeroSection language={language} />
@@ -36,7 +37,6 @@ const Index = () => {
           <ChatbotSection language={language} />
           <ComplaintSection language={language} />
           <BlogSection language={language} />
-          <OfficialBranding />
         </main>
 
         <Footer />
