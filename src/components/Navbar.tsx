@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Menu, X, Globe, MessageSquare, FileText, BookOpen } from "lucide-react";
+import { Menu, X, Globe, MessageSquare, FileText, BookOpen, Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,10 +9,34 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const languages = [
-  { code: "en", name: "English", native: "English" },
-  { code: "hi", name: "Hindi", native: "हिंदी" },
-  { code: "mr", name: "Marathi", native: "मराठी" },
+  { code: "en", name: "English", native: "English", flag: "🇬🇧" },
+  { code: "hi", name: "Hindi", native: "हिंदी", flag: "🇮🇳" },
+  { code: "mr", name: "Marathi", native: "मराठी", flag: "🇮🇳" },
 ];
+
+const translations = {
+  en: {
+    chatbot: "AI Assistant",
+    complaints: "Complaints",
+    blog: "Resources",
+    news: "News",
+    selectLanguage: "Select Language",
+  },
+  hi: {
+    chatbot: "AI सहायक",
+    complaints: "शिकायतें",
+    blog: "संसाधन",
+    news: "समाचार",
+    selectLanguage: "भाषा चुनें",
+  },
+  mr: {
+    chatbot: "AI सहाय्यक",
+    complaints: "तक्रारी",
+    blog: "संसाधने",
+    news: "बातम्या",
+    selectLanguage: "भाषा निवडा",
+  },
+};
 
 interface NavbarProps {
   currentLanguage: string;
@@ -23,11 +47,13 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const currentLang = languages.find((l) => l.code === currentLanguage) || languages[0];
+  const t = translations[currentLanguage as keyof typeof translations] || translations.en;
 
   const navLinks = [
-    { href: "#chatbot", label: "Chatbot", icon: MessageSquare },
-    { href: "#complaints", label: "Complaints", icon: FileText },
-    { href: "#blog", label: "Blog", icon: BookOpen },
+    { href: "#news", label: t.news, icon: Newspaper },
+    { href: "#chatbot", label: t.chatbot, icon: MessageSquare },
+    { href: "#complaints", label: t.complaints, icon: FileText },
+    { href: "#blog", label: t.blog, icon: BookOpen },
   ];
 
   const scrollToSection = (href: string) => {
@@ -70,18 +96,23 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <Globe className="w-4 h-4" />
-                  <span className="hidden sm:inline">{currentLang.native}</span>
+                <Button variant="outline" size="sm" className="gap-2 border-primary/30 hover:border-primary">
+                  <Globe className="w-4 h-4 text-primary" />
+                  <span className="hidden sm:inline">{currentLang.flag} {currentLang.native}</span>
+                  <span className="sm:hidden">{currentLang.flag}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuContent align="end" className="w-48">
+                <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                  {t.selectLanguage}
+                </div>
                 {languages.map((lang) => (
                   <DropdownMenuItem
                     key={lang.code}
                     onClick={() => onLanguageChange(lang.code)}
-                    className={currentLanguage === lang.code ? "bg-accent" : ""}
+                    className={`cursor-pointer ${currentLanguage === lang.code ? "bg-primary/10 text-primary" : ""}`}
                   >
+                    <span className="mr-2">{lang.flag}</span>
                     <span className="font-medium">{lang.native}</span>
                     <span className="ml-auto text-muted-foreground text-xs">
                       {lang.name}
