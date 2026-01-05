@@ -1,4 +1,5 @@
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
+import jansevaLogo from "@/assets/janseva-logo.jpeg";
 
 interface FooterProps {
   language: string;
@@ -83,10 +84,12 @@ const Footer = ({ language }: FooterProps) => {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">जन</span>
-              </div>
+            <div className="flex items-center gap-3 mb-4">
+              <img 
+                src={jansevaLogo} 
+                alt="JanSeva Logo" 
+                className="w-12 h-12 rounded-xl object-cover"
+              />
               <span className="text-xl font-bold">JanSeva</span>
             </div>
             <p className="text-background/70 mb-4 max-w-md">
