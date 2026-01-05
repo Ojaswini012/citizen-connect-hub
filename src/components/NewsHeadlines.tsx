@@ -3,6 +3,8 @@ import { Newspaper, ExternalLink, Clock, ChevronRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import digitalIndiaImg from "@/assets/digital-india.png";
+import ayushmanBharatImg from "@/assets/ayushman-bharat.png";
 
 interface NewsHeadlinesProps {
   language: string;
@@ -35,14 +37,14 @@ const newsData = [
     title: { en: "PM Modi launches new Digital India initiative", hi: "पीएम मोदी ने नई डिजिटल इंडिया पहल शुरू की", mr: "पंतप्रधान मोदींनी नवीन डिजिटल इंडिया उपक्रम सुरू केला" },
     category: { en: "Digital India", hi: "डिजिटल इंडिया", mr: "डिजिटल इंडिया" },
     time: 2,
-    image: "https://images.unsplash.com/photo-1606567595334-d39972c85dfd?w=400&h=250&fit=crop",
+    image: digitalIndiaImg,
   },
   {
     id: 2,
     title: { en: "Ayushman Bharat benefits extended to more citizens", hi: "आयुष्मान भारत का लाभ अधिक नागरिकों तक पहुंचाया गया", mr: "आयुष्मान भारतचे फायदे अधिक नागरिकांपर्यंत वाढवले" },
     category: { en: "Healthcare", hi: "स्वास्थ्य", mr: "आरोग्य" },
     time: 5,
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop",
+    image: ayushmanBharatImg,
   },
   {
     id: 3,
