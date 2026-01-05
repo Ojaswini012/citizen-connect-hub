@@ -167,7 +167,7 @@ const Footer = ({ language }: FooterProps) => {
             <ul className="space-y-3 text-background/70">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>support@janseva.in</span>
+                <span>jansevagovorg@gmail.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
@@ -175,7 +175,7 @@ const Footer = ({ language }: FooterProps) => {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5" />
-                <span>New Delhi, India</span>
+                <span>Amravati, Maharashtra, India</span>
               </li>
             </ul>
           </div>
