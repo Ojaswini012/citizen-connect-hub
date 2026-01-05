@@ -182,7 +182,7 @@ const Footer = ({ language }: FooterProps) => {
         </div>
 
         <div className="border-t border-background/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-background/60">
-          <p>© 2024 JanSeva. {t.allRights}</p>
+          <p>© 2025 JanSeva. {t.allRights}</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-background transition-colors">{t.privacyPolicy}</a>
             <a href="#" className="hover:text-background transition-colors">{t.termsOfService}</a>
