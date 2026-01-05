@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import jansevaLogo from "@/assets/janseva-logo.jpeg";
 
 const languages = [
   { code: "en", name: "English", native: "English", flag: "🇬🇧" },
@@ -70,9 +71,11 @@ const Navbar = ({ currentLanguage, onLanguageChange }: NavbarProps) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center shadow-civic-md group-hover:shadow-civic-lg transition-shadow">
-              <span className="text-primary-foreground font-bold text-lg">जन</span>
-            </div>
+            <img 
+              src={jansevaLogo} 
+              alt="JanSeva Logo"
+              className="w-10 h-10 rounded-xl object-cover shadow-civic-md group-hover:shadow-civic-lg transition-shadow"
+            />
             <span className="text-xl font-bold text-foreground">
               JanSeva
             </span>

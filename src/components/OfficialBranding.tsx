@@ -1,3 +1,8 @@
+import digitalIndiaImg from "@/assets/digital-india.png";
+import pmModiImg from "@/assets/pm-modi.jpg";
+import satyamevJayateImg from "@/assets/satyamev-jayate.jpg";
+import makeInIndiaImg from "@/assets/made-in-india.png";
+
 interface OfficialBrandingProps {
   language: string;
 }
@@ -32,11 +37,12 @@ const OfficialBranding = ({ language }: OfficialBrandingProps) => {
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12 lg:gap-16">
           {/* Digital India Logo */}
           <div className="flex flex-col items-center gap-2 group">
-            <div className="w-20 h-20 md:w-28 md:h-28 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-              <div className="text-center text-white">
-                <div className="text-lg md:text-2xl font-bold">Digital</div>
-                <div className="text-sm md:text-lg font-semibold">India</div>
-              </div>
+            <div className="w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden bg-[#1a1a2e] flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+              <img 
+                src={digitalIndiaImg} 
+                alt="Digital India"
+                className="w-full h-full object-contain p-1"
+              />
             </div>
             <span className="text-xs text-muted-foreground">{t.digitalIndia}</span>
           </div>
@@ -45,8 +51,8 @@ const OfficialBranding = ({ language }: OfficialBrandingProps) => {
           <div className="flex flex-col items-center gap-2 group">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/30 shadow-lg group-hover:shadow-xl group-hover:border-primary/50 transition-all">
               <img 
-                src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=200&h=200&fit=crop&crop=face" 
-                alt="Prime Minister"
+                src={pmModiImg} 
+                alt="Prime Minister Narendra Modi"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -55,23 +61,24 @@ const OfficialBranding = ({ language }: OfficialBrandingProps) => {
 
           {/* Satyamev Jayate / National Emblem */}
           <div className="flex flex-col items-center gap-2 group">
-            <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl mb-1">🇮🇳</div>
-                <div className="text-sm md:text-base font-bold text-primary">सत्यमेव जयते</div>
-                <div className="text-xs text-muted-foreground">{t.satyamev}</div>
-              </div>
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden bg-white flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+              <img 
+                src={satyamevJayateImg} 
+                alt="Satyamev Jayate - National Emblem"
+                className="w-full h-full object-contain"
+              />
             </div>
+            <span className="text-xs text-muted-foreground">{t.satyamev}</span>
           </div>
 
           {/* Make in India */}
           <div className="flex flex-col items-center gap-2 group">
-            <div className="w-20 h-20 md:w-28 md:h-28 rounded-xl bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
-              <div className="text-center text-white">
-                <div className="text-base md:text-xl font-bold">Make in</div>
-                <div className="text-sm md:text-lg font-semibold">India</div>
-                <div className="text-xl md:text-2xl">🦁</div>
-              </div>
+            <div className="w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden bg-white flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+              <img 
+                src={makeInIndiaImg} 
+                alt="Make in India"
+                className="w-full h-full object-contain p-2"
+              />
             </div>
             <span className="text-xs text-muted-foreground">{t.makeInIndia}</span>
           </div>
